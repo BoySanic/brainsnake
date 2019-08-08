@@ -1,5 +1,4 @@
 import sys
-import numpy as np
 
 def interpret(brainfuck):	
 	programcounter = 0
@@ -23,7 +22,6 @@ def interpret(brainfuck):
 				cells[pointer] = 0
 			else:
 				cells[pointer] += 1
-
 		if(char == '-'):
 			if(cells[pointer] == 0):
 				cells[pointer] = 255
