@@ -33,7 +33,8 @@ def interpret(brainfuck):
 			else:
 				cells[pointer] -= 1
 		if(char == '.'):
-			print(cells[pointer])
+			sys.stdout.write(chr(cells[pointer]))
+			sys.stdout.flush()
 		if(char == ','):
 			cells[pointer] = raw_input("What do you want to enter: ")
 		if(char == '['):
@@ -48,9 +49,9 @@ def interpret(brainfuck):
 				if(c == ']'):
 					i -= 1
 				if(i == 0):
-					print("The closing bracket is at %s" % p)
+		#			print("The closing bracket is at %s" % p)
 					loopdict[p] = programcounter
-					print(loopdict)	
+		#			print(loopdict)	
 					break
 				p += 1
 			#append to dict
@@ -78,7 +79,7 @@ def interpret(brainfuck):
 		if(programcounter == len(brainfuck)):
 			print("fucking")
 			break
-		print("DEBUG: programcounter=%i pointer=%i cells[pointer] = %i, char=%s" % (programcounter, pointer, cells[pointer], char))
+		#print("DEBUG: programcounter=%i pointer=%i cells[pointer] = %i, char=%s" % (programcounter, pointer, cells[pointer], char))
 		programcounter += 1
 		#raw_input()
 
