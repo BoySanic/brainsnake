@@ -1,12 +1,11 @@
 #don't use this one wam
 
 import sys
-import numpy as np
 
 class Operation:
 	def __init__(self, o, c):
-		self.opcode = o
-		self.count = c
+		self.opcodes = o
+		self.counts = c
 
 def compress(brainfuck):
 	operList1 = []
@@ -80,10 +79,10 @@ def compress(brainfuck):
 		if(num == length):
 			return operList1, operList2
 #list of operations
-#operation = opcode and count
+#operation = opcodes[programcounter] and counts[programcounter]
 #array of operations
-#operation = array, opcode and count
-#[[opcode, count],[opcode, count]]
+#operation = array, opcodes[programcounter] and counts[programcounter]
+#[[opcodes[programcounter], counts[programcounter]],[opcodes[programcounter], counts[programcounter]]]
 def execute(opcodes, counts):
 	programcounter = 0
 	pointer = 0
@@ -99,7 +98,7 @@ def execute(opcodes, counts):
 	}
 	while(True):
 		char = opcodes[programcounter]
-		count = counts[programcounter]
+		counts[programcounter] = counts[programcounter]
 		if(char == '['):
 			c = char
 			p = programcounter
@@ -121,34 +120,28 @@ def execute(opcodes, counts):
 			break
 	programcounter = 0
 	while(True):
-		loopcount += 1
-		opcode = opcodes[programcounter]
-		count = counts[programcounter]
-		if(opcode == ">"):
-			pointer += count
-		elif(opcode == "<"):
-			pointer -= count
-		elif(opcode == '+'):
-			if(cells[pointer] + count > 255):
-				cells[pointer] = 0 + (count - 1)
+		if(opcodes[programcounter] == ">"):
+			pointer += counts[programcounter]
+		elif(opcodes[programcounter] == "<"):
+			pointer -= counts[programcounter]
+		elif(opcodes[programcounter] == '+'):
+			if(cells[pointer] + counts[programcounter] > 255):
+				cells[pointer] = 0 + (counts[programcounter] - 1)
 			else:
-				cells[pointer] += count
-		elif(opcode == '-'):
-			if(cells[pointer] - count < 0):
-				cells[pointer] = 255 - (count - 1)
+				cells[pointer] += counts[programcounter]
+		elif(opcodes[programcounter] == '-'):
+			if(cells[pointer] - counts[programcounter] < 0):
+				cells[pointer] = 255 - (counts[programcounter] - 1)
 			else:
-				cells[pointer] -= count
-		elif(opcode == '.'):
+				cells[pointer] -= counts[programcounter]
+		elif(opcodes[programcounter] == '.'):
 			sys.stdout.write(chr(cells[pointer]))
 			sys.stdout.flush()
-		elif(opcode == '['):
-			if(cells[pointer] == 0):
+		elif(opcodes[programcounter] == '[' and cells[pointer] == 0):
 				programcounter = dictloop[programcounter]
-		elif(opcode == ']'):
-			if(cells[pointer] != 0):
+		elif(opcodes[programcounter] == ']' and cells[pointer] != 0):
 				programcounter = loopdict[programcounter]
 		if(programcounter == length - 1):
-			print(loopcount)
 			break
 		programcounter += 1
 def main():
