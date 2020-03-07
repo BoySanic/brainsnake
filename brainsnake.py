@@ -1,6 +1,8 @@
 import sys
 
 def interpret(brainfuck):	
+	print("Why")
+	print(brainfuck)
 	programcounter = 0
 	pointer = 0
 	cells = [0] * 32768
@@ -12,6 +14,7 @@ def interpret(brainfuck):
 
 	}
 	while(True):
+		print(brainfuck[programcounter])
 		char = brainfuck[programcounter]
 		if(char == '>'):
 			pointer += 1
